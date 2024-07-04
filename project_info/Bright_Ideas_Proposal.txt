@@ -1,0 +1,58 @@
+Which group members are responsible for what?
+Jason Reed - Frontend
+Jared Park - Backend, GitHub
+Jeremy Jackson - Frontend/Backend
+
+Description of project:
+Our group will be working on the Bright Ideas wireframe for our project.
+This project involves the following:
+1. A login/registration form with backend validations
+2. A home page, a user is redirected to, upon successful login/registration
+that displays all posts, available on the website.
+From here, they can perform the following:
+	a. Create a new project post for others to collaborate on
+	b. View other user profiles, via a redirect to another react route
+	c. Like a post, incrementing the likes counter next to each post
+	d. Check the status of each project's likes and who liked it, (containing redirect info)
+	e. delete a post, created by the logged in user
+3. A Like Status page, that can be accessed from the home page, 
+This page displays the post in question, and a table with all users that liked the post, 
+In addition, links for switching back to the home page and logging out the user are also included.
+4. A user profile, displaying user's information, created in registration, the total numbers of posts they created and liked.
+
+Github link for project: 
+
+https://github.com/jtp0330/brightIdeas
+
+Will you have a gitignore? 
+Yes, it will be used to filter out MERN dependencies (node_mdoules)
+
+
+How will you implement full CRUD?
+We will implement the full CRUD using, MERN stack.
+The frontend will be coded in React JS, sending API requests to the backend,
+developed in Express.js. Express.js will have function to handle CRUD operations, thus
+sending specific requests to the MongoDB database.
+
+
+What are your validations for create and update?
+
+User:
+	Name - name should not be empty
+	Alias - alias should not be empty
+	Email - email should not be empty and match an proper email format
+	Password - password should not be empty and should be anywhere between 10-16 characters
+	Confirm Password - confirm password should not be empty and should match the value in the password field
+
+Post:
+	post_name - the post_name should not be empty
+	liked_users - liked_users should be a list of users that are registered in our MongoDB database
+
+
+What are your stretch goals if any?
+	1. Incorporate Bootstrap
+	2. Add protected routes to our application (should redirect 
+	our application to the login page, if not successfully authenticated)
+
+
+Please include a copy (image or hyperlink) for your wireframe.

@@ -3,14 +3,14 @@ import {model, Schema} from 'mongoose'
 //define Book Schema
 const IdeaSchema = new Schema(
     {
-        user:{
+        userName:{
             type: String,
             required: [true, "Title is required!"],
             minlength: [2, "Title must be at least 2 characters!"],
             maxlength: [255, "title must be at most 255 characters!"],
             validate:{
-                validator: s => !s.includes("mom"),
-                message: props => `${props.value} should not include your mom!`
+                validator: s => !s.includes(" "),
+                message: props => `${props.value} should not include a space!`
             }
         },
         content:{

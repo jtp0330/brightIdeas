@@ -1,4 +1,5 @@
 import User from '../models/users.model.js'
+import LoginUser from '../models/loginusers.model.js';
 
 async function createUser(req,resp){
     try{
@@ -56,7 +57,19 @@ async function deleteUser(req,resp){
 
 async function loginUser(req,resp)
 {
-
+    const creds = req.body;
+        const user = await User.findOne({email:creds.email})
+        .then(user=> {
+            if(user){
+            const hashedPassword = bcrypt.hashSync(creds.password,user.salt);
+                    if(hashedPassword === user.password)
+                        resp.json("successful login!")
+                    else
+                        resp.json("password is incorrect")
+            } else{
+                resp.json("User Not found")
+            }
+        })
 };
 
 export{
@@ -65,4 +78,5 @@ export{
     getAllUsers,
     updateUser,
     deleteUser,
+    loginUser,
 };

@@ -1,18 +1,20 @@
-import { useState } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './App.css'
+import Home from './views/Home'
+import LoginRegister from './views/LoginRegister'
+import LikeStatus from './views/LikeStatus'
+import UserProfile from './views/UserProfile'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/main"></Route>
-          <Route path="/bright_ideas"></Route>
-          <Route path="/bright_ideas/:id"></Route>
-          <Route path="/users/:id"></Route>
+          <Route path="/main" element={<LoginRegister />}></Route>
+          <Route path="/bright_ideas" element={<Home />}></Route>
+          <Route path="/bright_ideas/:id" element={<LikeStatus />}></Route>
+          <Route path="/users/:id" element={<UserProfile />}></Route>
         </Routes>
       </BrowserRouter>
     </>

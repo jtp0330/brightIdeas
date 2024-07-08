@@ -39,16 +39,23 @@ const UserSchema = new Schema(
             minlength: [8, "Password must be at least 8 characters!"],
             maxlength: [20, "Password must be at most 20 characters!"]
         },
-        confirmPassword:{
-            type: String,
-            required: [true, "Please enter the same password again!"],
-            //ensure field has same value as password field
-            validate:{
-                validator: field => field.match(this.password),
-                message: "Passwords do not match!"
+        // confirmPassword:{
+        //     type: String,
+        //     required: [true, "Please enter the same password again!"],
+        //     //ensure field has same value as password field
+        //     validate:{
+        //         validator: field => field.match(this.password),
+        //         message: "Passwords do not match!"
 
-            }
-        },
+        //     }
+        // },
+        
+            //salt value, must be stored upon regsiter
+            salt:{
+                type: String,
+                required: [true, "Please enter the same password again!"],
+                //ensure field has same value as password field
+        }
     },
     {timestamps: true}
 );

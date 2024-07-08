@@ -57,19 +57,24 @@ async function deleteUser(req,resp){
 
 async function loginUser(req,resp)
 {
-    const creds = req.body;
+    try{
+        const creds = req.body;
         const user = await User.findOne({email:creds.email})
         .then(user=> {
             if(user){
             const hashedPassword = bcrypt.hashSync(creds.password,user.salt);
                     if(hashedPassword === user.password)
-                        resp.json("successful login!")
+                        resp.status(200).json("successful login!")
                     else
-                        resp.json("password is incorrect")
+                        resp.status(403).json("password is incorrect")
             } else{
-                resp.json("User Not found")
+                resp.status(404).json("User Not found")
             }
         })
+    }catch(error){
+        console.log(error);
+        resp.status(400).json(error);
+    }
 };
 
 export{

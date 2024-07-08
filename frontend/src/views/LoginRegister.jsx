@@ -1,20 +1,21 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import bcrypt from 'bcryptjs'
 
 
 const LoginRegister = () => {
 
     const [loginEmail, setLoginEmail] = useState("")
     const [loginPassword, setLoginPassword] = useState("")
-    const [registerName, setregisterName] = useState("")
+    const [registerName, setRegisterName] = useState("")
     const [registerAlias, setRegisterAlias] = useState("")
     const [registerEmail, setRegisterEmail] = useState("")
     const [registerPassword, setRegisterPassword] = useState("")
     const [registerConfirmPassword, setRegisterConfirmPassword] = useState("")
 
     const [confirmPasswordError, setConfirmPasswordError] = useState(""); //must add this as no validation in our user model
-
+    const [errors, setErrors] = useState([])
     const navigate = useNavigate()
 
 
@@ -27,26 +28,28 @@ const LoginRegister = () => {
         }
     }
 
-    const handleLogin = () => {
-
+    const handleLogin = (e) => {
+        e.preventDefault()
         const newLogin = {
             loginEmail,
             loginPassword
         }
 
         axios.post("http://localhost:8000/api/users/login", newLogin)
-            .then(resp => resp.json())
             .then(data => {
                 console.log(data);
                 console.log("Login Attempt Sent!");
                 navigate("/bright_ideas");
             })
-            .catch(err => {
+            .catch((err) => {
                 console.log(err);
+                setErrors(err.response.data)
+                console.log(errors) //shows User Not Found -> refer to /backend/users.controllers.js -> line 71
             })
     };
 
-    const handleRegister = () => {
+    const handleRegister = (e) => {
+        e.preventDefault()
         const hashedVariables = encryptPassword(registerPassword)
         const hashedPassword = hashedVariables.hashedPassword;
         const salt = hashedVariables.salt;
@@ -67,7 +70,11 @@ const LoginRegister = () => {
                 navigate("/bright_ideas");
             })
             .catch(err => {
-                console.log(err);
+                console.log
+                setErrors(err.response.data.errors)
+                if (!registerConfirmPassword || registerConfirmPassword !== registerPassword)
+                    setErrors([...errors, { confirmPassword: 'Confirm Password must match Password' }])
+                console.log(errors)
             })
     };
 
@@ -76,14 +83,19 @@ const LoginRegister = () => {
             {/* register Form */}
             <form onSubmit={handleRegister}>
                 <label htmlFor="name"></label>
+                {errors.name && <span style={{ "color": "red" }}><p>{errors.name.message}</p></span>}
                 <input type="text" className="form-control" id="name" onChange={(e) => (setRegisterName(e.target.value))} placeholder="Name"></input>
                 <label htmlFor="alias"></label>
+                {errors.alias && <span style={{ "color": "red" }}><p>{errors.alias.message}</p></span>}
                 <input type="text" className="form-control" id="alias" onChange={(e) => (setRegisterAlias(e.target.value))} placeholder="Alias"></input>
                 <label htmlFor="register_email"></label>
+                {errors.email && <span style={{ "color": "red" }}><p>{errors.email.message}</p></span>}
                 <input type="text" className="form-control" id="register_email" onChange={(e) => (setRegisterEmail(e.target.value))} placeholder="Email"></input>
                 <label htmlFor="register_password"></label>
+                {errors.password && <span style={{ "color": "red" }}><p>{errors.password.message}</p></span>}
                 <input type="password" className="form-control" id="register_password" onChange={(e) => (setRegisterPassword(e.target.value))} placeholder="Password"></input>
                 <label htmlFor="confirm_password"></label>
+                {errors.confirmPassword && <span style={{ "color": "red" }}><p>{errors.confirmPassword.message}</p></span>}
                 <input type="password" className="form-control" id="confirm_password" onChange={(e) => (setRegisterConfirmPassword(e.target.value))} placeholder="Confirm Password"></input>
                 <input type="submit" />
             </form>
@@ -91,7 +103,9 @@ const LoginRegister = () => {
             <form onSubmit={handleLogin}>
                 <label htmlFor="login_email"></label>
                 <input type="text" className="form-control" id="login_email" onChange={(e) => (setLoginEmail(e.target.value))} placeholder="Email"></input>
+                {errors && <span style={{ "color": "red" }}><p>{errors}</p></span>}
                 <label htmlFor="login_password"></label>
+                {errors.password && <span style={{ "color": "red" }}><p>{errors.password.message}</p></span>}
                 <input type="password" className="form-control" id="login_password" onChange={(e) => (setLoginPassword(e.target.value))} placeholder="Password"></input>
                 <input type="submit" />
             </form>

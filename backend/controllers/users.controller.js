@@ -3,6 +3,7 @@ import LoginUser from '../models/loginusers.model.js';
 
 async function createUser(req,resp){
     try{
+        console.log(req.body)
         const newUser = await User.create(req.body);
         return resp.status(201).json(newUser);
     }catch(error){
@@ -48,7 +49,7 @@ async function updateUser(req,resp){
 async function deleteUser(req,resp){
     try{
         const deletedUser = await User.findByIdAndDelete(req.params.id);
-        return resp.status(204).send();
+        resp.status(204).send();
     }catch(error){
         console.log(error);
         resp.status(400).json(error);
@@ -66,9 +67,9 @@ async function loginUser(req,resp)
                     if(hashedPassword === user.password)
                         resp.status(200).json("successful login!")
                     else
-                        resp.status(403).json("password is incorrect")
+                        resp.status(403).json({"password": "password is incorrect"})
             } else{
-                resp.status(404).json("User Not found")
+                resp.status(401).json({"email":"User Not found"})
             }
         })
     }catch(error){

@@ -8,20 +8,20 @@ const UserSchema = new Schema(
             required: [true, "First Name is required!"],
             minlength: [2, "Title must be at least 2 characters!"],
             maxlength: [255, "title must be at most 255 characters!"],
-            validate:{
-                validator: s => !s.includes("mom"),
-                message: props => `${props.value} should not include a space!`
-            }
+            // validate:{
+            //     validator: s => !s.includes("mom"),
+            //     message: props => `${props.value} should not include a space!`
+            // }
         },
         alias:{
             type: String,
             required: [true, "Alias is required!"],
-            minlength: [2, "Title must be at least 2 characters!"],
-            maxlength: [255, "title must be at most 255 characters!"],
-            validate:{
-                validator: s => !s.includes(" "),
-                message: props => `${props.value} should not include a space!`
-            }
+            // minlength: [2, "Title must be at least 2 characters!"],
+            // maxlength: [255, "title must be at most 255 characters!"],
+            // validate:{
+            //     validator: s => !s.includes(" "),
+            //     message: props => `${props.value} should not include a space!`
+            // }
         },
         email:{
             type: String,

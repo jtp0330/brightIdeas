@@ -54,6 +54,11 @@ async function deleteUser(req,resp){
     }
 };
 
+async function loginUser(req,resp)
+{
+
+};
+
 export{
     createUser,
     getUser,

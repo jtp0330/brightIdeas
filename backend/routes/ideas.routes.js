@@ -10,11 +10,11 @@ import {Router} from 'express';
 
 const router = Router()
 
-router.route('/ideas')
+router.route('/bright_ideas')
     .get(getAllIdeas)
     .post(createIdea);
 
-router.route('/ideas/:id')
+router.route('/bright_ideas/:id')
     .get(getIdea)
     .put(updateIdea)
     .delete(deleteIdea);

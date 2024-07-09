@@ -40,7 +40,7 @@ const LoginRegister = () => {
             .then(data => {
                 console.log(data);
                 console.log("Login Attempt Sent!");
-                App.setUser(data)
+                // App.setUser(data)
                 navigate("/bright_ideas");
             })
             .catch((err) => {

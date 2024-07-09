@@ -27,6 +27,8 @@ const Home = () => {
             setIdeaData({ ...ideaData, content: '' }) // Clear the content field after successful submission
         } catch (error) {
             console.error('Error creating idea:', error);
+            console.error(error.response.data.errors.content);
+            setErrors(error.response.data.errors.content);
             // Handle error state or display an error message to the user
         }
     };
@@ -34,6 +36,8 @@ const Home = () => {
 
     const [idea, setIdea] = useState({})   //for creating new ideas
     const [ideas, setIdeas] = useState([]) //for displaying all ideas
+    const [error, setErrors] = useState({})
+
     const HandleIdeaCreate = (e) => {
         e.preventDefault()
 
@@ -64,7 +68,7 @@ const Home = () => {
                  <h3>Welcome user</h3>
             </div>
             <div className="ideasForm">
-                <form onSubmit={HandleIdeaCreate} className="form-group">
+                <form onSubmit={handleSubmit} className="form-group">
 
                         <textarea
                             className="form-control"
@@ -75,6 +79,9 @@ const Home = () => {
                             onChange={handleChange}
                             style={{ resize: 'none', minHeight: '50px' }}
                         />
+                {error && <span style={{ "color": "red" }}><p>{error.message}</p></span>}
+
+                    
                     <input type="submit" className="btn btn-primary" />
                 </form>
             </div>
@@ -86,5 +93,6 @@ const Home = () => {
             <div className="ideasMappedIdeas"></div>
         </div>
     );
-};
+}
+export default Home;
 

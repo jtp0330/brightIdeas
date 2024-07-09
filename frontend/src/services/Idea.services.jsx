@@ -1,7 +1,8 @@
+/* eslint-disable no-useless-catch */
 import axios from 'axios'
 
 const IDEA_INSTANCE = axios.create({
-    baseURL: 'http://localhost:8000/'
+    baseURL: 'http://localhost:8000/api/'
 })
 
 //create

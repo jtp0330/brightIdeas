@@ -3,7 +3,7 @@ import './App.css'
 import LoginRegister from './views/LoginRegister'
 import LikeStatus from './views/LikeStatus'
 import UserProfile from './views/UserProfile'
-import { Home } from './views/Home'
+import Home  from './views/Home'
 import {useState} from 'react'
 
 function App() {

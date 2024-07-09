@@ -29,37 +29,35 @@ const UserSchema = new Schema(
             //should validate with proper email format
             // * = any number of characters
             validate:{
-                validator: email => email.match("*@*.com"),
+                validator: email => email.match(".*@.*.[com|org]"),
                 message: props => `${props.value} is not a valid email!`
             }
         },
         password:{
             type: String,
             required: [true, "Please provide a valid password!"],
-            minlength: [8, "Password must be at least 8 characters!"],
-            maxlength: [20, "Password must be at most 20 characters!"]
+            minlength: [8, "Password must be at least 8 characters!"]
         },
-        // confirmPassword:{
-        //     type: String,
-        //     required: [true, "Please enter the same password again!"],
-        //     //ensure field has same value as password field
-        //     validate:{
-        //         validator: field => field.match(this.password),
-        //         message: "Passwords do not match!"
+        confirmPassword:{
+            type: String,
+            required: [true, "Please enter the same password again!"],
+            //ensure field has same value as password field
+            // validate:{
+            //     validator: true,
+            //     message: "Passwords do not match!"
 
-        //     }
-        // },
-        
-            //salt value, must be stored upon regsiter
-            salt:{
-                type: String,
-                required: [true, "Please enter the same password again!"],
-                //ensure field has same value as password field
+            // }
         }
+        
+        //     //salt value, must be stored upon regsiter
+        //     salt:{
+        //         type: String,
+        //         required: [true, "Please enter the same password again!"],
+        //         //ensure field has same value as password field
+        // }
     },
     {timestamps: true}
 );
-
 //initalize schema and make accessible
 const User = model("User", UserSchema);
 export default User;

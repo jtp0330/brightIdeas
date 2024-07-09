@@ -5,9 +5,9 @@ import LoginRegister from './views/LoginRegister'
 import LikeStatus from './views/LikeStatus'
 import UserProfile from './views/UserProfile'
 
-//use lifted state to keep track of user details throughout components, once user is logged in
 function App() {
-
+  //use lifted state to keep track of user details throughout components, once user is logged in
+  const [user, setUser] = useState({});
   return (
     <>
       <BrowserRouter>

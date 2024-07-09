@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import bcrypt from 'bcryptjs'
-
+import App from '../App.jsx'
 
 const LoginRegister = () => {
 
@@ -40,6 +40,7 @@ const LoginRegister = () => {
             .then(data => {
                 console.log(data);
                 console.log("Login Attempt Sent!");
+                App.setUser(data)
                 navigate("/bright_ideas");
             })
             .catch((err) => {

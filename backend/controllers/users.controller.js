@@ -1,13 +1,11 @@
 import User from '../models/users.model.js'
-import LoginUser from '../models/loginusers.model.js';
 
 async function createUser(req,resp){
     try{
-        console.log(req.body)
         const newUser = await User.create(req.body);
         return resp.status(201).json(newUser);
     }catch(error){
-        console.log(error);
+        // console.log(error);
         resp.status(400).json(error);
     }
 };
@@ -59,19 +57,20 @@ async function deleteUser(req,resp){
 async function loginUser(req,resp)
 {
     try{
+        console.log(req.body)
         const creds = req.body;
-        const user = await User.findOne({email:creds.email})
-        .then(user=> {
+        const user = await User.findOne({email:creds.loginEmail})
+        console.log(user)
             if(user){
-            const hashedPassword = bcrypt.hashSync(creds.password,user.salt);
-                    if(hashedPassword === user.password)
+
+                    if(creds.loginPassword === user.password)
                         resp.status(200).json("successful login!")
                     else
-                        resp.status(403).json({"password": "password is incorrect"})
+                        resp.status(403).json({"loginPassword": "password is incorrect"})
             } else{
-                resp.status(401).json({"email":"User Not found"})
+                resp.status(401).json({"loginEmail":"User Not found"})
             }
-        })
+
     }catch(error){
         console.log(error);
         resp.status(400).json(error);

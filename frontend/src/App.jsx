@@ -6,7 +6,8 @@ import UserProfile from './views/UserProfile'
 import { Home } from './views/Home'
 
 function App() {
-
+  //use lifted state to keep track of user details throughout components, once user is logged in
+  const [user, setUser] = useState({});
   return (
     <>
       <BrowserRouter>

@@ -7,7 +7,7 @@ const UserSchema = new Schema(
             type: String,
             required: [true, "First Name is required!"],
             minlength: [2, "Title must be at least 2 characters!"],
-            maxlength: [255, "title must be at most 255 characters!"],
+            maxlength: [255, "title must be at most 255 characters!"]
             // validate:{
             //     validator: s => !s.includes("mom"),
             //     message: props => `${props.value} should not include a space!`
@@ -15,7 +15,7 @@ const UserSchema = new Schema(
         },
         alias:{
             type: String,
-            required: [true, "Alias is required!"],
+            required: [true, "Alias is required!"]
             // minlength: [2, "Title must be at least 2 characters!"],
             // maxlength: [255, "title must be at most 255 characters!"],
             // validate:{

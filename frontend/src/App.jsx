@@ -1,9 +1,9 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './App.css'
-import Home from './views/Home'
 import LoginRegister from './views/LoginRegister'
 import LikeStatus from './views/LikeStatus'
 import UserProfile from './views/UserProfile'
+import { Home } from './views/Home'
 
 function App() {
 

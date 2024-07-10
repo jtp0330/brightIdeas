@@ -1,15 +1,11 @@
-import { useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios'
-import { createIdea } from '../services/Idea.services'
+import { useState, useContext, useEffect } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { createIdea, getAllIdeas, updateIdeaById } from '../services/Idea.services'
 import UserContext from '../context/UserContext';
 
 const Home = () => {
-
-
     //user data
     const { userRef, logout } = useContext(UserContext);
-    console.log(userRef)
     const navigate = useNavigate();
 
     const [ideaData, setIdeaData] = useState({
@@ -55,16 +51,38 @@ const Home = () => {
             setErrors(error.response.data.errors.content);
             // Handle error state or display an error message to the user
         }
-    };
+    }
 
-    const [idea, setIdea] = useState({})   //for creating new ideas
-    const [ideas, setIdeas] = useState([]) //for displaying all ideas
-    const [error, setErrors] = useState({})
+    const handleLike = async (ideaId) => {
+        try {
+            // Find the idea in allIdeas array by its ID
+            const ideaToUpdate = allIdeas.find(idea => idea._id === ideaId);
 
-    //split frontend of hompage into 3 parts as per the wireframe
-    //1. header
-    //2. form for create posts
-    //3. posts -> contains info mapped from a useEffect request
+            // Check if the current user has already liked the idea
+            if (!ideaToUpdate.likes.includes(userRef.current._id)) {
+                // Update idea data with the current user's ID added to likes
+                const updatedLikes = [...ideaToUpdate.likes, userRef.current._id];
+
+                // Call the updateIdeaById function with the updated likes array
+                await updateIdeaById(ideaId, { ...ideaToUpdate, likes: updatedLikes });
+
+                // Update allIdeas state with the updated idea
+                const updatedIdeas = allIdeas.map(idea =>
+                    idea._id === ideaId ? { ...idea, likes: updatedLikes } : idea
+                );
+                setAllIdeas(updatedIdeas);
+
+                // Fetch updated list of ideas after liking/unliking
+                fetchIdeas();
+            } else {
+                console.log('You have already liked this idea.');
+            }
+        } catch (error) {
+            console.error('Error liking idea:', error);
+            // Handle error state or display an error message to the user
+        }
+    }
+
 
     return (
         <div className="container">
@@ -83,8 +101,8 @@ const Home = () => {
                         value={ideaData.content}
                         onChange={handleChange}
                         style={{ resize: 'none', minHeight: '50px' }}
-                        
-                    {error && <span style={{ "color": "red" }}><p>{error.message}</p></span>}
+                    />
+                    {/* {error && <span style={{ "color": "red" }}><p>{error.message}</p></span>} */}
                     <button type="submit" className='btn btn-primary mt-2'>Post Idea!</button>
                 </form>
             </div>
@@ -92,17 +110,35 @@ const Home = () => {
                 {allIdeas.length === 0 ? (
                     <p>No ideas yet.</p>
                 ) : (
-                    <ul className="list-group">
-                        {allIdeas.map((idea) => (
-                            <li key={idea._id} className="list-group-item mb-2">
-                                <strong><Link to={`/users/${idea.userId}`}>{idea.userName}</Link> says: </strong>{idea.content}
-                            </li>
-                        ))}
-                    </ul>
+                    allIdeas.map((idea) => (
+                        <div key={idea._id} className="row mb-3">
+                            <div className="col-md-10">
+                                <div className="card">
+                                    <div className="card-body">
+                                        <h5 className="card-title">
+                                            <strong><Link to={`/users/${idea.userId}`}>{idea.userName}</Link> says:</strong>
+                                        </h5>
+                                        <p className="card-text">{idea.content}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-md-2">
+                                <div className="d-flex flex-column align-items-center">
+                                    <button
+                                        className="btn btn-outline-primary btn-sm mb-2"
+                                        onClick={() => handleLike(idea._id)}
+                                        disabled={idea.likes.includes(userRef.current._id)}>
+                                        Like
+                                    </button>
+                                    <span>{idea.likes.length} {idea.likes.length === 1 ? 'like' : 'likes'}</span>
+                                </div>
+                            </div>
+                        </div>
+                    ))
                 )}
             </div>
         </div>
-    );
+    )
 }
-export default Home;
+export default Home
 

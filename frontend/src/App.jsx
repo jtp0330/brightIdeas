@@ -3,16 +3,9 @@ import './App.css'
 import LoginRegister from './views/LoginRegister'
 import LikeStatus from './views/LikeStatus'
 import UserProfile from './views/UserProfile'
-import { Home } from './views/Home'
-import { useState } from 'react'
-
-function App() {
-  //use lifted state to keep track of user details throughout components, once user is logged in
-  const [user, setUser] = useState({});
-
-import Home from './views/Home'
 import { useState, useRef } from 'react'
 import UserContext from './context/UserContext'
+import Home from './views/Home'
 
 function App() {
   //use lifted state to keep track of user details throughout components, once user is logged in

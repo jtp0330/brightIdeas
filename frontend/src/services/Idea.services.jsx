@@ -36,7 +36,7 @@ export const getIdeaById = async (id) => {
 
 export const updateIdeaById = async (id, ideaData) => {
     try {
-        const res = await IDEA_INSTANCE.put(`bright_ideas/${id}/edit`, ideaData)
+        const res = await IDEA_INSTANCE.put(`bright_ideas/${id}`, ideaData)
         return res.data
     } catch (error) { throw error }
 }

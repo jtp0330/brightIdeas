@@ -1,8 +1,11 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import bcrypt from 'bcryptjs'
 import App from '../App.jsx'
+import UserContext from '../context/UserContext.js'
+
+
 
 const LoginRegister = () => {
 
@@ -18,6 +21,9 @@ const LoginRegister = () => {
     const navigate = useNavigate()
     const [errors, setErrors] = useState({})
 
+
+    //current userdata
+    const { login } = useContext(UserContext);
 
     const encryptPassword = (password) => {
 
@@ -40,7 +46,7 @@ const LoginRegister = () => {
             .then(data => {
                 console.log(data);
                 console.log("Login Attempt Sent!");
-                // App.setUser(data)
+                login(data.data)
                 navigate("/bright_ideas");
             })
             .catch((err) => {
@@ -70,6 +76,7 @@ const LoginRegister = () => {
             .then(resp => {
                 console.log(resp.data);
                 console.log("Register Attempt Sent!");
+                login(resp.data)
                 navigate("/bright_ideas");
             })
             .catch(err => {

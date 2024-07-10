@@ -25,6 +25,8 @@ const IdeaSchema = new Schema(
         //     default:0
         // },
         //keep reference of likes
+        //likes will be an array of json objects
+        //{id, alias}
         likes:{
             type:Array,
             default: []

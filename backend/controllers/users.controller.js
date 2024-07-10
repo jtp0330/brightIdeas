@@ -64,7 +64,7 @@ async function loginUser(req,resp)
             if(user){
 
                     if(creds.loginPassword === user.password)
-                        resp.status(200).json("successful login!")
+                        resp.status(200).json(user)
                     else
                         resp.status(403).json({"loginPassword": "password is incorrect"})
             } else{

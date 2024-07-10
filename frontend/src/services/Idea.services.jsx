@@ -19,10 +19,8 @@ export const createIdea = async ideaData => {
 //read
 
 export const getAllIdeas = async () => {
-    console.log('HIT')
     try {
         const res = await IDEA_INSTANCE.get('/bright_ideas')
-        console.log('hit')
         return res.data
     } catch (error) { throw error }
 }

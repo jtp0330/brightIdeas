@@ -1,12 +1,19 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios'
 import { createIdea } from '../services/Idea.services'
+import UserContext from '../context/UserContext';
 
 const Home = () => {
-  
-  //from jason_home////////
-  
-      const [ideaData, setIdeaData] = useState({
+
+
+    //user data
+    const { userRef, logout } = useContext(UserContext);
+    console.log(userRef)
+    const navigate = useNavigate();
+    //from jason_home////////
+
+    const [ideaData, setIdeaData] = useState({
         content: '',
         userName: 'Anonymous',
         likes: [] // Array to store user IDs who liked the idea
@@ -15,6 +22,11 @@ const Home = () => {
     const handleChange = (event) => {
         const { name, value } = event.target
         setIdeaData({ ...ideaData, [name]: value })
+    }
+
+    const handleLogout = () => {
+        logout();
+        navigate("/main");
     }
 
     const handleSubmit = async (e) => {
@@ -32,29 +44,29 @@ const Home = () => {
             // Handle error state or display an error message to the user
         }
     };
-  ///////////////////////////////
+    ///////////////////////////////
 
     const [idea, setIdea] = useState({})   //for creating new ideas
     const [ideas, setIdeas] = useState([]) //for displaying all ideas
     const [error, setErrors] = useState({})
 
-    const HandleIdeaCreate = (e) => {
-        e.preventDefault()
+    // const HandleIdeaCreate = (e) => {
+    //     e.preventDefault()
 
-        const testUser = {
-            "userName": "test",
-            "content": idea
-        }
-        //testing the create feature
-        axios.post("http://localhost:8000/api/bright_ideas", testUser)
-            .then(resp => {
-                console.log(resp.data)
-                console.log("idea created")
-            })
-            .catch(err => {
-                console.log(err)
-            })
-    }
+    //     const testUser = {
+    //         "userName": "test",
+    //         "content": idea
+    //     }
+    //     //testing the create feature
+    //     axios.post("http://localhost:8000/api/bright_ideas", testUser)
+    //         .then(resp => {
+    //             console.log(resp.data)
+    //             console.log("idea created")
+    //         })
+    //         .catch(err => {
+    //             console.log(err)
+    //         })
+    // }
     //split frontend of hompage into 3 parts as per the wireframe
     //1. header
     //2. form for create posts
@@ -64,24 +76,25 @@ const Home = () => {
         <div className="ideasHome">
 
             <div className="ideasHeader">
-                 <h1 className="mt-5">Bright Ideas</h1>
-                 <h3>Welcome user</h3>
+                <h1 className="mt-5">Bright Ideas</h1>
+                <h3>Welcome {userRef.current ? userRef.current.alias : "user"}</h3>
+                <a onClick={handleLogout}>Logout</a>
             </div>
             <div className="ideasForm">
                 <form onSubmit={handleSubmit} className="form-group">
 
-                        <textarea
-                            className="form-control"
-                            placeholder="Share your idea..."
-                            aria-label="Share your idea"
-                            name="content"
-                            value={ideaData.content}
-                            onChange={handleChange}
-                            style={{ resize: 'none', minHeight: '50px' }}
-                        />
-                {error && <span style={{ "color": "red" }}><p>{error.message}</p></span>}
+                    <textarea
+                        className="form-control"
+                        placeholder="Share your idea..."
+                        aria-label="Share your idea"
+                        name="content"
+                        value={ideaData.content}
+                        onChange={handleChange}
+                        style={{ resize: 'none', minHeight: '50px' }}
+                    />
+                    {error && <span style={{ "color": "red" }}><p>{error.message}</p></span>}
 
-                    
+
                     <input type="submit" className="btn btn-primary" />
                 </form>
             </div>

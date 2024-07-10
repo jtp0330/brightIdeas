@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const IDEA_INSTANCE = axios.create({
-    baseURL: 'http://localhost:8000/'
+    baseURL: 'http://localhost:8000/api/'
 })
 
 //create
@@ -18,10 +18,8 @@ export const createIdea = async ideaData => {
 //read
 
 export const getAllIdeas = async () => {
-    console.log('HIT')
     try {
         const res = await IDEA_INSTANCE.get('/bright_ideas')
-        console.log('hit')
         return res.data
     } catch (error) { throw error }
 }

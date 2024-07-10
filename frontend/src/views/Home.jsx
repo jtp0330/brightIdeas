@@ -1,16 +1,29 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import axios from 'axios'
-import { createIdea } from '../services/Idea.services'
+import { createIdea, getAllIdeas } from '../services/Idea.services'
 
-const Home = () => {
-  
-  //from jason_home////////
-  
-      const [ideaData, setIdeaData] = useState({
+export const Home = ({ user }) => {
+
+    const [ideaData, setIdeaData] = useState({
         content: '',
         userName: 'Anonymous',
         likes: [] // Array to store user IDs who liked the idea
     })
+    const [allIdeas, setAllIdeas] = useState([])
+
+    useEffect(() => {
+        fetchIdeas()
+    }, [ideaData])
+
+    const fetchIdeas = async () => {
+        try {
+            const ideasFromApi = await getAllIdeas()
+            setAllIdeas(ideasFromApi)
+        } catch (error) {
+            console.log('error fetching ideas', error)
+        }
+    }
 
     const handleChange = (event) => {
         const { name, value } = event.target
@@ -19,72 +32,52 @@ const Home = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-
         try {
             // Call createIdea function with the ideaData object
-            await createIdea(ideaData);
+            await createIdea(ideaData)
             console.log('Idea created successfully')
             setIdeaData({ ...ideaData, content: '' }) // Clear the content field after successful submission
         } catch (error) {
-            console.error('Error creating idea:', error);
+            console.error('Error creating idea:', error)
             // Handle error state or display an error message to the user
         }
-    };
-  ///////////////////////////////
-
-    const [idea, setIdea] = useState({})   //for creating new ideas
-    const [ideas, setIdeas] = useState([]) //for displaying all ideas
-    const HandleIdeaCreate = (e) => {
-        e.preventDefault()
-
-        const testUser = {
-            "userName": "test",
-            "content": idea
-        }
-        //testing the create feature
-        axios.post("http://localhost:8000/api/bright_ideas", testUser)
-            .then(resp => {
-                console.log(resp.data)
-                console.log("idea created")
-            })
-            .catch(err => {
-                console.log(err)
-            })
     }
-    //split frontend of hompage into 3 parts as per the wireframe
-    //1. header
-    //2. form for create posts
-    //3. posts -> contains info mapped from a useEffect request
 
     return (
-        <div className="ideasHome">
-
+        <div className="container">
             <div className="ideasHeader">
-                 <h1 className="mt-5">Bright Ideas</h1>
-                 <h3>Welcome user</h3>
+                <h1 className="mt-5">Bright Ideas</h1>
+                <h3>Welcome {user.userName}</h3>
             </div>
             <div className="ideasForm">
-                <form onSubmit={HandleIdeaCreate} className="form-group">
-
-                        <textarea
-                            className="form-control"
-                            placeholder="Share your idea..."
-                            aria-label="Share your idea"
-                            name="content"
-                            value={ideaData.content}
-                            onChange={handleChange}
-                            style={{ resize: 'none', minHeight: '50px' }}
-                        />
-                    <input type="submit" className="btn btn-primary" />
+                <form onSubmit={handleSubmit} className="form-group">
+                    <textarea
+                        className="form-control"
+                        placeholder="Share your idea..."
+                        aria-label="Share your idea"
+                        name="content"
+                        value={ideaData.content}
+                        onChange={handleChange}
+                        style={{ resize: 'none', minHeight: '50px' }}
+                        required
+                    />
+                    <button type="submit" className='btn btn-primary mt-2'>Post Idea!</button>
                 </form>
             </div>
-            {/* //may want to make these ideas into a separate component with the following:
-            //1. user who created post says
-            //2. the idea content
-            //3. Like Link
-            //4. Number of people like this p element that contains a link to the idea's like status */}
-            <div className="ideasMappedIdeas"></div>
+            <div className="ideasMappedIdeas mt-4">
+                {allIdeas.length === 0 ? (
+                    <p>No ideas yet.</p>
+                ) : (
+                    <ul className="list-group">
+                        {allIdeas.map((idea) => (
+                            <li key={idea._id} className="list-group-item mb-2">
+                                <strong><Link to={`/users/${idea.userId}`}>{idea.userName}</Link> says: </strong>{idea.content}
+                            </li>
+                        ))}
+                    </ul>
+                )}
+            </div>
         </div>
-    );
-};
+    )
+}
 

@@ -11,7 +11,7 @@ const Home = () => {
     const [ideaData, setIdeaData] = useState({
         content: '',
         userName: 'Anonymous',
-        likes: [] // Array to store user IDs who liked the idea
+        likes: [] // Array to store user properties {ID,name,alias} who liked the idea
     })
     const [allIdeas, setAllIdeas] = useState([])
 
@@ -61,7 +61,11 @@ const Home = () => {
             // Check if the current user has already liked the idea
             if (!ideaToUpdate.likes.includes(userRef.current._id)) {
                 // Update idea data with the current user's ID added to likes
-                const updatedLikes = [...ideaToUpdate.likes, userRef.current._id];
+                const updatedLikes = [...ideaToUpdate.likes, {
+                    "_id": userRef.current._id,
+                    "name": userRef.current.name,
+                    "alias": userRef.current.alias
+                }];
 
                 // Call the updateIdeaById function with the updated likes array
                 await updateIdeaById(ideaId, { ...ideaToUpdate, likes: updatedLikes });

@@ -1,9 +1,16 @@
-import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios'
-import { createIdea, getAllIdeas } from '../services/Idea.services'
+import { createIdea } from '../services/Idea.services'
+import UserContext from '../context/UserContext';
 
-export const Home = ({ user }) => {
+const Home = () => {
+
+
+    //user data
+    const { userRef, logout } = useContext(UserContext);
+    console.log(userRef)
+    const navigate = useNavigate();
 
     const [ideaData, setIdeaData] = useState({
         content: '',
@@ -30,6 +37,11 @@ export const Home = ({ user }) => {
         setIdeaData({ ...ideaData, [name]: value })
     }
 
+    const handleLogout = () => {
+        logout();
+        navigate("/main");
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
@@ -38,16 +50,28 @@ export const Home = ({ user }) => {
             console.log('Idea created successfully')
             setIdeaData({ ...ideaData, content: '' }) // Clear the content field after successful submission
         } catch (error) {
-            console.error('Error creating idea:', error)
+            console.error('Error creating idea:', error);
+            console.error(error.response.data.errors.content);
+            setErrors(error.response.data.errors.content);
             // Handle error state or display an error message to the user
         }
-    }
+    };
+
+    const [idea, setIdea] = useState({})   //for creating new ideas
+    const [ideas, setIdeas] = useState([]) //for displaying all ideas
+    const [error, setErrors] = useState({})
+
+    //split frontend of hompage into 3 parts as per the wireframe
+    //1. header
+    //2. form for create posts
+    //3. posts -> contains info mapped from a useEffect request
 
     return (
         <div className="container">
             <div className="ideasHeader">
                 <h1 className="mt-5">Bright Ideas</h1>
-                <h3>Welcome {user.userName}</h3>
+                <h3>Welcome {userRef.current ? userRef.current.alias : "user"}</h3>
+                <a onClick={handleLogout}>Logout</a>
             </div>
             <div className="ideasForm">
                 <form onSubmit={handleSubmit} className="form-group">
@@ -59,8 +83,8 @@ export const Home = ({ user }) => {
                         value={ideaData.content}
                         onChange={handleChange}
                         style={{ resize: 'none', minHeight: '50px' }}
-                        required
-                    />
+                        
+                    {error && <span style={{ "color": "red" }}><p>{error.message}</p></span>}
                     <button type="submit" className='btn btn-primary mt-2'>Post Idea!</button>
                 </form>
             </div>
@@ -78,6 +102,7 @@ export const Home = ({ user }) => {
                 )}
             </div>
         </div>
-    )
+    );
 }
+export default Home;
 

@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-catch */
 import axios from 'axios'
 
 const IDEA_INSTANCE = axios.create({

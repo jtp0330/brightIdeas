@@ -8,25 +8,37 @@ import { useState } from 'react'
 
 function App() {
   //use lifted state to keep track of user details throughout components, once user is logged in
-  const [user, setUser] = useState({
-    name: '',
-    alias: '',
-    email: '',
-    id: '',
-  });
+  const [user, setUser] = useState({});
 
+import Home from './views/Home'
+import { useState, useRef } from 'react'
+import UserContext from './context/UserContext'
+
+function App() {
+  //use lifted state to keep track of user details throughout components, once user is logged in
+  const [user, setUser] = useState(null);
+
+  const login = (userData) => {
+    setUser(userData)
+  };
+
+  const logout = () => {
+    setUser(null)
+  }
+  const userRef = useRef(null)
+  userRef.current = user
 
   return (
-    <>
+    <UserContext.Provider value={{ user, setUser, userRef, login, logout }}>
       <BrowserRouter>
         <Routes>
-          <Route path="/main" element={<LoginRegister setUser={setUser} />}></Route>
-          <Route path="/bright_ideas" element={<Home user={user} />}></Route>
+          <Route path="/main" element={<LoginRegister />}></Route>
+          <Route path="/bright_ideas" element={<Home />}></Route>
           <Route path="/bright_ideas/:id" element={<LikeStatus />}></Route>
           <Route path="/users/:id" element={<UserProfile />}></Route>
         </Routes>
       </BrowserRouter>
-    </>
+    </UserContext.Provider>
   )
 }
 

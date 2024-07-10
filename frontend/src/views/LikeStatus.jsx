@@ -1,11 +1,12 @@
 import { useContext, useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 
 
 
 const LikeStatus = () => {
     const [idea, setIdea] = useState({})
     const { id } = useParams();
+
     useEffect(() => {
         fetchIdea()
     }, [idea]);
@@ -14,6 +15,7 @@ const LikeStatus = () => {
         try {
             const ideasFromApi = await getIdeaById(id)
             setIdea(ideasFromApi)
+            console.log(idea)
         } catch (error) {
             console.log('error fetching ideas', error)
         }
@@ -24,7 +26,7 @@ const LikeStatus = () => {
     }
 
     return (
-        <div className="d-flex flex-column container">
+        < div className="d-flex flex-column container" >
             <div className="header d-flex flex-row">
                 <a href="/bright_ideas">Bright Ideas</a>
                 <a href={handleLogout}>Logout</a>
@@ -41,13 +43,19 @@ const LikeStatus = () => {
                         <th>Alias</th>
                         <th>Name</th>
                     </thead>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                    </tr>
+                    <tbody>
+                        {
+                            idea.likes.map((user) => (
+                                <tr key={user._id}>
+                                    <td><Link to={`/users/${user._id}`}>{user.alias}</Link></td>
+                                    <td>{user.name}</td>
+                                </tr>
+                            ))
+                        }
+                    </tbody>
                 </table>
             </div>
-        </div>
+        </div >
     )
 };
 export default LikeStatus;

@@ -134,7 +134,11 @@ const Home = () => {
                                         disabled={idea.likes.includes(userRef.current._id)}>
                                         Like
                                     </button>
-                                    <span>{idea.likes.length} {idea.likes.length === 1 ? 'like' : 'likes'}</span>
+                                    <span>{idea.likes.length}
+                                        <Link to={`/bright_ideas/${idea._id}`}>
+                                            {idea.likes.length === 1 ? 'person like this' : 'people likes this'}
+                                        </Link>
+                                    </span>
                                 </div>
                             </div>
                         </div>

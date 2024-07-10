@@ -1,11 +1,11 @@
 import { useState, useContext, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { createIdea, getAllIdeas, updateIdeaById } from '../services/Idea.services'
-import UserContext from '../context/UserContext';
+// import UserContext from '../context/UserContext';
 
 const Home = () => {
     //user data
-    const { userRef, logout } = useContext(UserContext);
+    // const { userRef, logout } = useContext(UserContext);
     const navigate = useNavigate();
 
     const [ideaData, setIdeaData] = useState({
@@ -13,10 +13,18 @@ const Home = () => {
         userName: 'Anonymous',
         likes: [] // Array to store user properties {ID,name,alias} who liked the idea
     })
-    const [allIdeas, setAllIdeas] = useState([])
+    const [allIdeas, setAllIdeas] = useState([]);
+    const [user,setUser] = useState({});
 
     useEffect(() => {
         fetchIdeas()
+
+        //check for user data in local storage
+        const currentUser = localStorage.getItem('user');
+        if(currentUser){
+            const loggedInUser = JSON.parse(currentUser);
+            setUser(loggedInUser);
+        }
     }, [ideaData])
 
     const fetchIdeas = async () => {
@@ -34,7 +42,8 @@ const Home = () => {
     }
 
     const handleLogout = () => {
-        logout();
+        setUser({});
+        localStorage.clear();
         navigate("/main");
     }
 
@@ -59,12 +68,12 @@ const Home = () => {
             const ideaToUpdate = allIdeas.find(idea => idea._id === ideaId);
 
             // Check if the current user has already liked the idea
-            if (!ideaToUpdate.likes.includes(userRef.current._id)) {
+            if (!ideaToUpdate.likes.includes(user._id)) {
                 // Update idea data with the current user's ID added to likes
                 const updatedLikes = [...ideaToUpdate.likes, {
-                    "_id": userRef.current._id,
-                    "name": userRef.current.name,
-                    "alias": userRef.current.alias
+                    "_id": user._id,
+                    "name": user.name,
+                    "alias": user.alias
                 }];
 
                 // Call the updateIdeaById function with the updated likes array
@@ -92,7 +101,7 @@ const Home = () => {
         <div className="container">
             <div className="ideasHeader">
                 <h1 className="mt-5">Bright Ideas</h1>
-                <h3>Welcome {userRef.current ? userRef.current.alias : "user"}</h3>
+                <h3>Welcome {user.alias}</h3>
                 <a onClick={handleLogout}>Logout</a>
             </div>
             <div className="ideasForm">
@@ -131,7 +140,7 @@ const Home = () => {
                                     <button
                                         className="btn btn-outline-primary btn-sm mb-2"
                                         onClick={() => handleLike(idea._id)}
-                                        disabled={idea.likes.includes(userRef.current._id)}>
+                                        disabled={idea.likes.includes(user._id)}>
                                         Like
                                     </button>
                                     <span>{idea.likes.length}

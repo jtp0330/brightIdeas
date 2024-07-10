@@ -6,32 +6,43 @@ import UserProfile from './views/UserProfile'
 import { useState, useRef } from 'react'
 import UserContext from './context/UserContext'
 import Home from './views/Home'
+import {useCookies,CookiesProvider} from 'react-cookie'
 
 function App() {
   //use lifted state to keep track of user details throughout components, once user is logged in
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState({});
+  const [cookies, setCookies] = useCookies(['user']);
 
   const login = (userData) => {
     setUser(userData)
   };
 
+  const cookieLogin = (user) => {
+    setCookies('user', user, {path: '/'})
+  }
+
   const logout = () => {
     setUser(null)
   }
-  const userRef = useRef(null)
-  userRef.current = user
+
+  // const cookieLogout = () => {
+  //   setCookies('user', {}, {path: '/'})
+  // }
+
+  // const userRef = useRef(null)
+  // userRef.current = user
 
   return (
-    <UserContext.Provider value={{ user, setUser, userRef, login, logout }}>
+    <CookiesProvider>
       <BrowserRouter>
         <Routes>
           <Route path="/main" element={<LoginRegister />}></Route>
-          <Route path="/bright_ideas" element={<Home />}></Route>
-          <Route path="/bright_ideas/:id" element={<LikeStatus />}></Route>
-          <Route path="/users/:id" element={<UserProfile />}></Route>
+          <Route path="/bright_ideas" element={<Home user={cookies.user} />}></Route>
+          <Route path="/bright_ideas/:id" element={cookies.user? <LikeStatus user={cookies.user} /> : <LoginRegister onLogin={cookieLogin} />}></Route>
+          <Route path="/users/:id" element={cookies.user? <UserProfile user={cookies.user} /> : <LoginRegister onLogin={cookieLogin} />}></Route>
         </Routes>
       </BrowserRouter>
-    </UserContext.Provider>
+    </CookiesProvider>
   )
 }
 

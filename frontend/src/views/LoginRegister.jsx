@@ -7,6 +7,7 @@ import UserContext from '../context/UserContext.js'
 
 
 
+// eslint-disable-next-line react/prop-types
 const LoginRegister = () => {
 
     const [loginEmail, setLoginEmail] = useState("")
@@ -21,19 +22,15 @@ const LoginRegister = () => {
     const navigate = useNavigate()
     const [errors, setErrors] = useState({})
 
+    // const encryptPassword = (password) => {
 
-    //current userdata
-    const { login } = useContext(UserContext);
-
-    const encryptPassword = (password) => {
-
-        const salt = bcrypt.genSaltSync(10); //save this value to mongodb user collection
-        const hashedPassword = bcrypt.hashSync(password, salt);
-        return {
-            'hashedPassword': hashedPassword,
-            'salt': salt
-        }
-    }
+    //     const salt = bcrypt.genSaltSync(10); //save this value to mongodb user collection
+    //     const hashedPassword = bcrypt.hashSync(password, salt);
+    //     return {
+    //         'hashedPassword': hashedPassword,
+    //         'salt': salt
+    //     }
+    // }
 
     const handleLogin = (e) => {
         e.preventDefault()
@@ -46,7 +43,8 @@ const LoginRegister = () => {
             .then(data => {
                 console.log(data);
                 console.log("Login Attempt Sent!");
-                login(data.data)
+                // onLogin(data.data)
+                localStorage.setItem('user',JSON.stringify(data.data))
                 navigate("/bright_ideas");
             })
             .catch((err) => {
@@ -76,7 +74,7 @@ const LoginRegister = () => {
             .then(resp => {
                 console.log(resp.data);
                 console.log("Register Attempt Sent!");
-                login(resp.data)
+                localStorage.setItem('user',JSON.stringify(resp.data))
                 navigate("/bright_ideas");
             })
             .catch(err => {

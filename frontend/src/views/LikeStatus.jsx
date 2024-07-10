@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate, useParams, Link } from 'react-router-dom';
 
 
@@ -6,9 +6,17 @@ import { useNavigate, useParams, Link } from 'react-router-dom';
 const LikeStatus = () => {
     const [idea, setIdea] = useState({})
     const { id } = useParams();
+    const navigate = useNavigate()
+    const [loggedInuser, setLoggedInUser] = useState({})
 
     useEffect(() => {
         fetchIdea()
+        //check for user data in local storage
+        const currentUser = localStorage.getItem('user');
+        if(currentUser){
+            const loggedInUser = JSON.parse(currentUser);
+            setLoggedInUser(loggedInUser);
+        }
     }, [idea]);
 
     const fetchIdea = async () => {
@@ -21,7 +29,9 @@ const LikeStatus = () => {
         }
     }
     const handleLogout = () => {
-        logout();
+        setUser({});
+        localStorage.clear();
+        navigate("/main");
         navigate("/main");
     }
 

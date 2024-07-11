@@ -1,4 +1,4 @@
-import { useEffect,useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { getIdeaById } from '../services/Idea.services'
 
@@ -33,24 +33,28 @@ const LikeStatus = () => {
         navigate("/main");
     }
     //remove duplicate entries from likes array in called idea
-    const removeDuplicates = () =>{
+    const removeDuplicates = () => {
         let displayedUsers = idea.likes && idea.likes.map(JSON.stringify)
         let displayedUserSet = new Set(displayedUsers)
-        return  Array.from(displayedUserSet).map(JSON.parse)
+        return Array.from(displayedUserSet).map(JSON.parse)
     }
     const uniqueDisplayedUsers = removeDuplicates();
 
-    
+
     return (
         < div className="d-flex flex-column gap-5 container" >
-            <div className="header d-flex flex-row justify-content-end gap-3">
+            <div className="header d-flex flex-row justify-content-end gap-3 p-3">
                 <a href="/bright_ideas">Bright Ideas</a>
                 <button className='btn btn-danger' onClick={handleLogout}>
-                Logout
-            </button>
+                    Logout
+                </button>
             </div>
-            <div className="ideaContent">
-                <p className="card-text">{idea.content}</p>
+            <div className="card mb-3">
+                <div className="card-body">
+                    <p className="card-text">
+                        <strong>{idea.userName}</strong> says: {idea.content}
+                    </p>
+                </div>
             </div>
 
             <div className="d-flex flex-column likedPeople">
@@ -65,7 +69,6 @@ const LikeStatus = () => {
                     <tbody>
                         {uniqueDisplayedUsers &&
                             uniqueDisplayedUsers.map((userData, index) => (
-
                                 < tr key={index}>
                                     <td><Link to={`/users/${userData._id}`}>{userData.alias}</Link></td>
                                     < td > {userData.name}</td>

@@ -16,10 +16,8 @@ export const getAllUsers = async () => {
 }
 
 export const getUserById = async (id) => {
-    console.log('hit outside')
     try {
         const res = await USER_INSTANCE.get(`/users/${id}`)
-        console.log('hit inside')
         return res.data
     } catch (error) { throw error }
 }

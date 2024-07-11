@@ -1,4 +1,4 @@
-import { useNavigate, useParams} from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { getAllUsers, getUserById } from '../services/UserServices';
 import { getAllIdeas } from '../services/Idea.services';
@@ -75,26 +75,27 @@ const UserProfile = () => {
 
 
     return (<>
-        <div className="header d-flex flex-row justify-content-end gap-3 p-3">
-            <a href="/bright_ideas">Bright Ideas</a>
-            <button className='btn btn-danger' onClick={handleLogout}>
-                Logout
-            </button>
-        </div>
-        <div className="container mt-5">
-            <div className="card">
-                <h1 className="card-header">User Profile</h1>
-                <div className="card-body">
-                    <p className="card-text"><strong>Name:</strong> {user.name}</p>
-                    <p className="card-text"><strong>Alias:</strong> {user.alias}</p>
-                    <p className="card-text"><strong>Email:</strong> {user.email}</p>
-                    <hr />
-                    <p className="card-text"><strong>Total Number of Posts:</strong> {numPosts}</p>
-                    <p className="card-text"><strong>Total Number of Likes:</strong> {numLikes}</p>
+        < div className="d-flex flex-column gap-5 container" >
+            <div className="header d-flex flex-row justify-content-end gap-3 p-3">
+                <a href="/bright_ideas">Bright Ideas</a>
+                <button className='btn btn-danger' onClick={handleLogout}>
+                    Logout
+                </button>
+            </div>
+            <div className="container mt-5">
+                <div className="card">
+                    <h1 className="card-header">User Profile</h1>
+                    <div className="card-body">
+                        <p className="card-text"><strong>Name:</strong> {user.name}</p>
+                        <p className="card-text"><strong>Alias:</strong> {user.alias}</p>
+                        <p className="card-text"><strong>Email:</strong> {user.email}</p>
+                        <hr />
+                        <p className="card-text"><strong>Total Number of Posts:</strong> {numPosts}</p>
+                        <p className="card-text"><strong>Total Number of Likes:</strong> {numLikes}</p>
+                    </div>
                 </div>
             </div>
         </div>
-
     </>)
 }
 export default UserProfile

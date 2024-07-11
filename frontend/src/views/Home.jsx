@@ -187,10 +187,12 @@ const Home = () => {
     const [ideaData, setIdeaData] = useState({
         content: '',
         userName: '',
+        userId: user._id,
         likes: [] // Array to store user properties {ID,name,alias} who liked the idea
     })
     const [allIdeas, setAllIdeas] = useState([])
     const [allUsers, setAllUsers] = useState([])
+    // const [error, setUser] = useState("")
 
     useEffect(() => {
         fetchIdeas();
@@ -203,8 +205,8 @@ const Home = () => {
     }, []);
 
     useEffect(() => {
-        setIdeaData({ ...ideaData, userName: user.alias || '' });
-    }, [user.alias]);
+        setIdeaData({ ...ideaData, userName: user.alias, userId: user._id || '' });
+    }, [user.alias, user._id]);
 
     useEffect(() => {
         getAllUsers()
@@ -326,7 +328,7 @@ const Home = () => {
                             <div className="card-body">
                                 <h5 className="card-title">
                                     <strong>
-                                        <Link to={`/users/${idea.userName}`}>{idea.userName}</Link> says:
+                                        <Link to={`/users/${idea.userId}`}>{idea.userName}</Link> says:
                                     </strong>
                                 </h5>
                                 <p className="card-text">{idea.content}</p>

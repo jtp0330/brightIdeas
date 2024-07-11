@@ -45,7 +45,7 @@ const LikeStatus = () => {
 
             <div className="d-flex flex-column likedPeople">
                 <h3>People who liked this post:</h3>
-                <table>
+                <table className="table">
                     <thead>
                         <tr>
                             <th>Alias</th>

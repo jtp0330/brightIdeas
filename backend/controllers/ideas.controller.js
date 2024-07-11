@@ -1,4 +1,4 @@
-import Idea from '../models/Ideas.model.js'
+import Idea from '../models/ideas.model.js'
 
 async function createIdea(req,resp){
     try{

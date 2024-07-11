@@ -1,8 +1,8 @@
+/* eslint-disable no-unused-vars */
+
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import bcrypt from 'bcryptjs'
-
 
 
 // eslint-disable-next-line react/prop-types
@@ -20,15 +20,6 @@ const LoginRegister = () => {
     const navigate = useNavigate()
     const [errors, setErrors] = useState({})
 
-    // const encryptPassword = (password) => {
-
-    //     const salt = bcrypt.genSaltSync(10); //save this value to mongodb user collection
-    //     const hashedPassword = bcrypt.hashSync(password, salt);
-    //     return {
-    //         'hashedPassword': hashedPassword,
-    //         'salt': salt
-    //     }
-    // }
 
     const handleLogin = (e) => {
         e.preventDefault()

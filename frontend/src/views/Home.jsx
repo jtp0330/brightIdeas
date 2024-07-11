@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { createIdea, deleteIdeaById, getAllIdeas, updateIdeaById } from '../services/Idea.services';

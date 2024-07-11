@@ -1,4 +1,4 @@
-import { useState} from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import bcrypt from 'bcryptjs'
@@ -42,7 +42,7 @@ const LoginRegister = () => {
                 console.log(data);
                 console.log("Login Attempt Sent!");
                 // onLogin(data.data)
-                localStorage.setItem('user',JSON.stringify(data.data))
+                localStorage.setItem('user', JSON.stringify(data.data))
                 navigate("/bright_ideas");
             })
             .catch((err) => {
@@ -72,7 +72,7 @@ const LoginRegister = () => {
             .then(resp => {
                 console.log(resp.data);
                 console.log("Register Attempt Sent!");
-                localStorage.setItem('user',JSON.stringify(resp.data))
+                localStorage.setItem('user', JSON.stringify(resp.data))
                 navigate("/bright_ideas");
             })
             .catch(err => {
@@ -87,36 +87,59 @@ const LoginRegister = () => {
     };
 
     return (
-        <div className="d-flex flex-row">
-            {/* register Form */}
-            <form onSubmit={HandleRegister}>
-                <label htmlFor="name"></label>
-                <input type="text" className="form-control" id="name" onChange={(e) => (setName(e.target.value))} placeholder="Name"></input>
-                {errors.name && <span style={{ "color": "red" }}><p>{errors.name.message}</p></span>}
-                <label htmlFor="alias"></label>
-                <input type="text" className="form-control" id="alias" onChange={(e) => (setAlias(e.target.value))} placeholder="Alias"></input>
-                {errors.alias && <span style={{ "color": "red" }}><p>{errors.alias.message}</p></span>}
-                <label htmlFor="register_email"></label>
-                <input type="text" className="form-control" id="register_email" onChange={(e) => (setEmail(e.target.value))} placeholder="Email"></input>
-                {errors.email && <span style={{ "color": "red" }}><p>{errors.email.message}</p></span>}
-                <label htmlFor="register_password"></label>
-                <input type="password" className="form-control" id="register_password" onChange={(e) => (setPassword(e.target.value))} placeholder="Password"></input>
-                {errors.password && <span style={{ "color": "red" }}><p>{errors.password.message}</p></span>}
-                <label htmlFor="confirm_password"></label>
-                <input type="password" className="form-control" id="confirm_password" onChange={(e) => (setConfirmPassword(e.target.value))} placeholder="Confirm Password"></input>
-                {errors.confirmPassword && <span style={{ "color": "red" }}><p>{errors.confirmPassword.message}</p></span>}
-                <input type="submit" />
-            </form>
-            {/* login Form */}
-            <form onSubmit={handleLogin}>
-                <label htmlFor="loginEmail"></label>
-                <input type="text" className="form-control" id="loginEmail" onChange={(e) => (setLoginEmail(e.target.value))} placeholder="Email"></input>
-                {errors.loginEmail && <span style={{ "color": "red" }}><p>{errors.loginEmail}</p></span>}
-                <label htmlFor="loginPassword"></label>
-                <input type="password" className="form-control" id="loginPassword" onChange={(e) => (setLoginPassword(e.target.value))} placeholder="Password"></input>
-                {errors.loginPassword && <span style={{ "color": "red" }}><p>{errors.loginPassword}</p></span>}
-                <input type="submit" />
-            </form>
+        <div className='container mt-5'>
+            <div className='row'>
+                <div className='col-md-6'>
+                    {/* register Form */}
+                    <h2>Register</h2>
+                    <form onSubmit={HandleRegister}>
+                        <div className='form-group'>
+                            <label htmlFor="name"></label>
+                            <input type="text" className="form-control" id="name" onChange={(e) => (setName(e.target.value))} placeholder="Name"></input>
+                            {errors.name && <span style={{ "color": "red" }}><p>{errors.name.message}</p></span>}
+                        </div>
+                        <div className='form-group'>
+                            <label htmlFor="alias"></label>
+                            <input type="text" className="form-control" id="alias" onChange={(e) => (setAlias(e.target.value))} placeholder="Alias"></input>
+                            {errors.alias && <span style={{ "color": "red" }}><p>{errors.alias.message}</p></span>}
+                        </div>
+                        <div className='form-group'>
+                            <label htmlFor="register_email"></label>
+                            <input type="text" className="form-control" id="register_email" onChange={(e) => (setEmail(e.target.value))} placeholder="Email"></input>
+                            {errors.email && <span style={{ "color": "red" }}><p>{errors.email.message}</p></span>}
+                        </div>
+                        <div className='form-group'>
+                            <label htmlFor="register_password"></label>
+                            <input type="password" className="form-control" id="register_password" onChange={(e) => (setPassword(e.target.value))} placeholder="Password"></input>
+                            {errors.password && <span style={{ "color": "red" }}><p>{errors.password.message}</p></span>}
+                        </div>
+                        <div className='form-group'>
+                            <label htmlFor="confirm_password"></label>
+                            <input type="password" className="form-control" id="confirm_password" onChange={(e) => (setConfirmPassword(e.target.value))} placeholder="Confirm Password"></input>
+                            {errors.confirmPassword && <span style={{ "color": "red" }}><p>{errors.confirmPassword.message}</p></span>}
+                        </div>
+                        <button type="submit" className='btn btn-primary mr-2 mt-2'>Register</button>
+                    </form>
+                </div>
+                <div className='col-md-6'>
+                    {/* login Form */}
+                    <h2>Login</h2>
+                    <form onSubmit={handleLogin}>
+                        <div className='form-group'>
+                            <label htmlFor="loginEmail"></label>
+                            <input type="text" className="form-control" id="loginEmail" onChange={(e) => (setLoginEmail(e.target.value))} placeholder="Email"></input>
+                            {errors.loginEmail && <span style={{ "color": "red" }}><p>{errors.loginEmail}</p></span>}
+                        </div>
+                        <div className='form-group'>
+                            <label htmlFor="loginPassword"></label>
+                            <input type="password" className="form-control" id="loginPassword" onChange={(e) => (setLoginPassword(e.target.value))} placeholder="Password"></input>
+                            {errors.loginPassword && <span style={{ "color": "red" }}><p>{errors.loginPassword}</p></span>}
+                        </div>
+                        <button type="submit" className='btn btn-success mt-2'>Login</button>
+                    </form>
+                </div>
+
+            </div>
         </div>
     );
 }

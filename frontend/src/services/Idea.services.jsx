@@ -43,9 +43,9 @@ export const updateIdeaById = async (id, ideaData) => {
 
 //delete
 
-export const deleteIdeaById = async (ideaId) => {
+export const deleteIdeaById = async (id) => {
     try {
-        const res = await IDEA_INSTANCE.delete(`/${ideaId}`)
+        const res = await IDEA_INSTANCE.delete(`bright_ideas/${id}`)
         return res.data
     } catch (error) { throw error }
 }

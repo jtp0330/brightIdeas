@@ -1,13 +1,19 @@
 import axios from 'axios'
 
 const USER_INSTANCE = axios.create({
-    baseURL: 'http://localhost:8000/'
+    baseURL: 'http://localhost:8000/api/'
 })
 
 //create
 
 
 //read
+export const getAllUsers = async () => {
+    try {
+        const res = await USER_INSTANCE.get('/users')
+        return res.data
+    } catch (error) { throw error }
+}
 
 export const getUserById = async (id) => {
     console.log('hit outside')

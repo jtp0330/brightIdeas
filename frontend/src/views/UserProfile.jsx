@@ -1,47 +1,49 @@
 import { useNavigate, useParams, Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
+import { getAllUsers } from '../services/UserServices';
+import { all } from 'axios';
 
 
 const UserProfile = () => {
-    const [userDetails, setUserDetails] = useState({});
-    const {id} = useParams();
-    const navigate = useNavigate();
-    // const [user, setUser] = userState({});
-    
+    const { id: alias } = useParams();
+    const [allUsers, setAllUsers] = useState([])
+    const [user, setUser] = useState({})
+
     useEffect(() => {
-        fetchUserDetails()
-        //not sure if we need this here, but adding just in case
-        // const currentUser = localStorage.getItem('user');
-        // if(currentUser){
-        //     const loggedInUser = JSON.parse(currentUser);
-        //     setUser(loggedInUser);
-        // }
-    }, [userDetails]);
+        getAllUsers()
+            .then(res => {
+                setAllUsers(res)
+            })
+            .catch((error) => { throw error })
+    }, [])
+    console.log(allUsers)
 
-    const fetchUserDetails = async () => {
-        try {
-            const usersFromApi = await getUserById(id)
-            setUserDetails(usersFromApi)
-            console.log(userDetails)
-        } catch (error) {
-            console.log('error fetching ideas', error)
+    useEffect(() => {
+        console.log(allUsers)
+        if (allUsers.length > 0) {
+            const matchedUser = allUsers.find(user => user.alias === alias)
+            if (matchedUser) {
+                setUser(matchedUser)
+            } else {
+                setUser(null)
+            }
         }
-    }
+    }, [allUsers, alias])
 
-    return (
-        <div>
-            <div className="header">
-                <Link to={``}></Link>
-                <Link to={``}></Link>
+    console.log(user)
+
+    return (<>
+        <div className="container mt-5">
+            <div className="card">
+                <h1 className="card-header">User Profile</h1>
+                <div className="card-body">
+                    <p className="card-text"><strong>Name:</strong> {user.name}</p>
+                    <p className="card-text"><strong>Alias:</strong> {user.alias}</p>
+                    <p className="card-text"><strong>Email:</strong> {user.email}</p>
+                </div>
             </div>
-            <div className="userDetails">
-                <p>Name: {userDetails.name}</p>
-                <p>Alias: {userDetails.alias}</p>
-                <p>Email: {userDetails.email}</p>
-            </div>
-            <hr />
-            <div className="userPostsLikes"></div>
         </div>
-    );
-};
-export default UserProfile;
+
+    </>)
+}
+export default UserProfile

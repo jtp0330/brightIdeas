@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useReducer, useState } from 'react'
 import { useNavigate, useParams, Link } from 'react-router-dom';
-
+import { getIdeaById } from '../services/Idea.services'
 
 
 const LikeStatus = () => {
@@ -10,34 +10,32 @@ const LikeStatus = () => {
     const [loggedInuser, setLoggedInUser] = useState({})
 
     useEffect(() => {
-        fetchIdea()
+        // fetchIdea()
+        getIdeaById(id)
+            .then((resp) => {
+                console.log(resp)
+                setIdea(resp)
+            }).catch(err => {
+                console.log(err);
+            })
+
         //check for user data in local storage
         const currentUser = localStorage.getItem('user');
-        if(currentUser){
+        if (currentUser) {
             const loggedInUser = JSON.parse(currentUser);
             setLoggedInUser(loggedInUser);
         }
-    }, [idea]);
+    }, []);
 
-    const fetchIdea = async () => {
-        try {
-            const ideasFromApi = await getIdeaById(id)
-            setIdea(ideasFromApi)
-            console.log(idea)
-        } catch (error) {
-            console.log('error fetching ideas', error)
-        }
-    }
     const handleLogout = () => {
         setUser({});
         localStorage.clear();
         navigate("/main");
-        navigate("/main");
     }
 
     return (
-        < div className="d-flex flex-column container" >
-            <div className="header d-flex flex-row">
+        < div className="d-flex flex-column gap-5 container" >
+            <div className="header d-flex flex-row justify-content-end gap-3">
                 <a href="/bright_ideas">Bright Ideas</a>
                 <a href={handleLogout}>Logout</a>
             </div>
@@ -45,26 +43,28 @@ const LikeStatus = () => {
                 <p className="card-text">{idea.content}</p>
             </div>
 
-            <div className="d-flex flex-columhn likedPeople">
+            <div className="d-flex flex-column likedPeople">
                 <h3>People who liked this post:</h3>
-                {/* loop through likes array and get id,alias, and name */}
                 <table>
                     <thead>
-                        <th>Alias</th>
-                        <th>Name</th>
+                        <tr>
+                            <th>Alias</th>
+                            <th>Name</th>
+                        </tr>
                     </thead>
                     <tbody>
-                        {
-                            idea.likes.map((user) => (
-                                <tr key={user._id}>
-                                    <td><Link to={`/users/${user._id}`}>{user.alias}</Link></td>
-                                    <td>{user.name}</td>
+                        {idea.likes &&
+                            idea.likes.map((userData, index) => (
+
+                                < tr key={index} >
+                                    <td><Link to={`/users/${userData._id}`}>{userData.alias}</Link></td>
+                                    < td > {userData.name}</td>
                                 </tr>
                             ))
                         }
                     </tbody>
                 </table>
-            </div>
+            </div >
         </div >
     )
 };

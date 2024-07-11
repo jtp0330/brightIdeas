@@ -30,6 +30,7 @@ const UserProfile = () => {
         )
         return numPosts;
     }
+
     const handleNumLikes = (name) => {
         let numLikes = 0;
 
@@ -72,12 +73,10 @@ const UserProfile = () => {
         setNumLikes(likes)
     }, [allIdeas])
 
-
-
     return (<>
         < div className="d-flex flex-column gap-5 container" >
             <div className="header d-flex flex-row justify-content-end gap-3 p-3">
-                <a href="/bright_ideas">Bright Ideas</a>
+                <a href="/bright_ideas" className='btn btn-outline-warning'>Bright Ideas</a>
                 <button className='btn btn-danger' onClick={handleLogout}>
                     Logout
                 </button>
@@ -98,4 +97,5 @@ const UserProfile = () => {
         </div>
     </>)
 }
+
 export default UserProfile

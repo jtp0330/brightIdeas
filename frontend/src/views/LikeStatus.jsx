@@ -44,7 +44,7 @@ const LikeStatus = () => {
     return (
         < div className="d-flex flex-column gap-5 container" >
             <div className="header d-flex flex-row justify-content-end gap-3 p-3">
-                <a href="/bright_ideas">Bright Ideas</a>
+                <a href="/bright_ideas" className='btn btn-outline-warning'>Bright Ideas</a>
                 <button className='btn btn-danger' onClick={handleLogout}>
                     Logout
                 </button>

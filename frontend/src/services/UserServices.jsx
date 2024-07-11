@@ -4,9 +4,6 @@ const USER_INSTANCE = axios.create({
     baseURL: 'http://localhost:8000/api/'
 })
 
-//create
-
-
 //read
 export const getAllUsers = async () => {
     try {

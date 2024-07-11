@@ -1,11 +1,8 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import bcrypt from 'bcryptjs'
 
 
-
-// eslint-disable-next-line react/prop-types
 const LoginRegister = () => {
 
     const [loginEmail, setLoginEmail] = useState("")
@@ -16,19 +13,8 @@ const LoginRegister = () => {
     const [password, setPassword] = useState("")
     const [confirmPassword, setConfirmPassword] = useState("")
 
-    // const [confirmPasswordError, setConfirmPasswordError] = useState(""); //must add this as no validation in our user model
     const navigate = useNavigate()
     const [errors, setErrors] = useState({})
-
-    // const encryptPassword = (password) => {
-
-    //     const salt = bcrypt.genSaltSync(10); //save this value to mongodb user collection
-    //     const hashedPassword = bcrypt.hashSync(password, salt);
-    //     return {
-    //         'hashedPassword': hashedPassword,
-    //         'salt': salt
-    //     }
-    // }
 
     const handleLogin = (e) => {
         e.preventDefault()
@@ -41,7 +27,6 @@ const LoginRegister = () => {
             .then(data => {
                 console.log(data);
                 console.log("Login Attempt Sent!");
-                // onLogin(data.data)
                 localStorage.setItem('user', JSON.stringify(data.data))
                 navigate("/bright_ideas");
             })
@@ -54,9 +39,6 @@ const LoginRegister = () => {
 
     const HandleRegister = (e) => {
         e.preventDefault()
-        // const hashedVariables = encryptPassword(password)
-        // setPassword(hashedVariables.hashedPassword);
-        // const salt = hashedVariables.salt;
 
         const newUser = {
             name,
@@ -76,11 +58,8 @@ const LoginRegister = () => {
                 navigate("/bright_ideas");
             })
             .catch(err => {
-                // console.log(typeof(err.response.data.errors))
                 console.log(err.response.data.errors)
                 const errs = err.response.data.errors
-                // if (!confirmPassword || confirmPassword !== password)
-                //     Object.defineProperty(err.response.data.errors,"confirmPassword",{value: "Confirm Password must match Password" });
                 setErrors(errs)
                 console.log(errors)
             })

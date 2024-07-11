@@ -59,20 +59,20 @@ const Home = () => {
         setUser({});
         localStorage.clear();
         navigate('/main');
-    };
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             await createIdea(ideaData);
-            console.log('Idea created successfully');
-            setIdeaData({ ...ideaData, content: '' }); // Clear the content field after successful submission
-            fetchIdeas();
+            console.log('Idea created successfully')
+            setIdeaData({ ...ideaData, content: '' })
+            fetchIdeas()
         } catch (error) {
-            console.log('Error creating idea:', error);
-            console.log(error.response.data.errors.content);
+            console.log('Error creating idea:', error)
+            console.log(error.response.data.errors.content)
         }
-    };
+    }
 
     const handleLike = async (ideaId) => {
         try {
@@ -113,16 +113,12 @@ const Home = () => {
                 <div className='text-left'>
                     <h3>Welcome {user.alias}</h3>
                 </div>
-                {/* <div className='text-center'>
-                    <h1>Bright Ideas</h1>
-                </div> */}
                 <div className='text-right'>
                     <button className='btn btn-danger' onClick={handleLogout}>
                         Logout
                     </button>
                 </div>
             </div>
-
             <div className="ideasForm">
                 <form onSubmit={handleSubmit} className="mt-4">
                     <div className="form-group">
@@ -183,8 +179,8 @@ const Home = () => {
                 )}
             </div>
         </div>
-    );
-};
+    )
+}
 
 export default Home;
 

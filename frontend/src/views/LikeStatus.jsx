@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useState } from 'react'
+import { useEffect,useState } from 'react'
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { getIdeaById } from '../services/Idea.services'
 
@@ -28,21 +28,26 @@ const LikeStatus = () => {
     }, []);
 
     const handleLogout = () => {
-        setUser({});
+        setLoggedInUser({});
         localStorage.clear();
         navigate("/main");
     }
+    //remove duplicate entries from likes array in called idea
+    const removeDuplicates = () =>{
+        let displayedUsers = idea.likes && idea.likes.map(JSON.stringify)
+        let displayedUserSet = new Set(displayedUsers)
+        return  Array.from(displayedUserSet).map(JSON.parse)
+    }
+    const uniqueDisplayedUsers = removeDuplicates();
 
-    const displayedUsers = idea.likes && idea.likes.map(JSON.stringify)
-    const displayedUserSet = new Set(displayedUsers)
-    const uniqueDisplayedUsers = Array.from(displayedUserSet).map(JSON.parse)
-
-    console.log(displayedUsers)
+    
     return (
         < div className="d-flex flex-column gap-5 container" >
             <div className="header d-flex flex-row justify-content-end gap-3">
                 <a href="/bright_ideas">Bright Ideas</a>
-                <a href={handleLogout}>Logout</a>
+                <button className='btn btn-danger' onClick={handleLogout}>
+                Logout
+            </button>
             </div>
             <div className="ideaContent">
                 <p className="card-text">{idea.content}</p>

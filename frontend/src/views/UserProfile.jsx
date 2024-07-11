@@ -12,6 +12,7 @@ const UserProfile = () => {
     const [allIdeas, setAllIdeas] = useState([])
     const [numPosts, setNumPosts] = useState(0)
     const [numLikes, setNumLikes] = useState(0)
+
     const navigate = useNavigate();
 
     const handleLogout = () => {
@@ -70,7 +71,9 @@ const UserProfile = () => {
         let likes = handleNumLikes(user.alias)
         setNumPosts(posts)
         setNumLikes(likes)
-    }, [])
+    }, [allIdeas])
+
+
 
     return (<>
         <div className="header d-flex flex-row justify-content-end gap-3 p-3">

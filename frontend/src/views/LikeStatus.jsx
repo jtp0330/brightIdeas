@@ -33,6 +33,11 @@ const LikeStatus = () => {
         navigate("/main");
     }
 
+    const displayedUsers = idea.likes && idea.likes.map(JSON.stringify)
+    const displayedUserSet = new Set(displayedUsers)
+    const uniqueDisplayedUsers = Array.from(displayedUserSet).map(JSON.parse)
+
+    console.log(displayedUsers)
     return (
         < div className="d-flex flex-column gap-5 container" >
             <div className="header d-flex flex-row justify-content-end gap-3">
@@ -53,13 +58,14 @@ const LikeStatus = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {idea.likes &&
-                            idea.likes.map((userData, index) => (
+                        {uniqueDisplayedUsers &&
+                            uniqueDisplayedUsers.map((userData, index) => (
 
-                                < tr key={index} >
+                                < tr key={index}>
                                     <td><Link to={`/users/${userData._id}`}>{userData.alias}</Link></td>
                                     < td > {userData.name}</td>
                                 </tr>
+
                             ))
                         }
                     </tbody>

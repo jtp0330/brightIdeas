@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { createIdea, getAllIdeas, updateIdeaById } from '../services/Idea.services'
+import { createIdea, deleteIdeaById, getAllIdeas, updateIdeaById } from '../services/Idea.services'
 // import UserContext from '../context/UserContext';
 
 const Home = () => {
@@ -14,14 +14,15 @@ const Home = () => {
         likes: [] // Array to store user properties {ID,name,alias} who liked the idea
     })
     const [allIdeas, setAllIdeas] = useState([]);
-    const [user,setUser] = useState({});
+    const [user, setUser] = useState({});
+    const [error, setError] = useState({});
 
     useEffect(() => {
         fetchIdeas()
 
         //check for user data in local storage
         const currentUser = localStorage.getItem('user');
-        if(currentUser){
+        if (currentUser) {
             const loggedInUser = JSON.parse(currentUser);
             setUser(loggedInUser);
         }
@@ -51,16 +52,28 @@ const Home = () => {
         e.preventDefault()
         try {
             // Call createIdea function with the ideaData object
+            ideaData.userId = user._id;
             await createIdea(ideaData)
             console.log('Idea created successfully')
             setIdeaData({ ...ideaData, content: '' }) // Clear the content field after successful submission
         } catch (error) {
             console.error('Error creating idea:', error);
             console.error(error.response.data.errors.content);
-            setErrors(error.response.data.errors.content);
+            setError(error.response.data.errors.content);
             // Handle error state or display an error message to the user
         }
     }
+
+    // const handleDelete = async (id) => {
+    //     try {
+    //         await deleteIdeaById(id)
+    //         console.log("idea has been deleted")
+    //     } catch (error) {
+    //         console.error("Idea could not be deleted!")
+    //         console.error(error)
+    //     }
+
+    // }
 
     const handleLike = async (ideaId) => {
         try {
@@ -98,14 +111,15 @@ const Home = () => {
 
 
     return (
-        <div className="container">
-            <div className="ideasHeader">
-                <h1 className="mt-5">Bright Ideas</h1>
-                <h3>Welcome {user.alias}</h3>
+        <div className="p-2 d-flex flex-column gap-5 container">
+            <div className="d-flex flex-row justify-content-between align-items-center ideasHeader">
+                {/* <h1 className="mt-5">Bright Ideas</h1> */}
+                <h1>Welcome {user.alias}</h1>
                 <a onClick={handleLogout}>Logout</a>
             </div>
             <div className="ideasForm">
-                <form onSubmit={handleSubmit} className="form-group">
+                <form onSubmit={handleSubmit} className="d-flex flex-row  gap-3 align-items-center form-group">
+
                     <textarea
                         className="form-control"
                         placeholder="Share your idea..."
@@ -115,8 +129,8 @@ const Home = () => {
                         onChange={handleChange}
                         style={{ resize: 'none', minHeight: '50px' }}
                     />
-                    {/* {error && <span style={{ "color": "red" }}><p>{error.message}</p></span>} */}
-                    <button type="submit" className='btn btn-primary mt-2'>Post Idea!</button>
+                    {error && <span style={{ "color": "red" }}><p>{error.message}</p></span>}
+                    <button type="submit" className='btn btn-primary '>Post Idea!</button>
                 </form>
             </div>
             <div className="ideasMappedIdeas mt-4">
@@ -133,6 +147,7 @@ const Home = () => {
                                         </h5>
                                         <p className="card-text">{idea.content}</p>
                                     </div>
+                                    {/* {idea.userId === user._id && <button onClick={() => handleDelete(idea.userId)}>X</button>} */}
                                 </div>
                             </div>
                             <div className="col-md-2">
